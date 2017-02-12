@@ -19,11 +19,10 @@ const MetalSmithLoader = ( opts ) => {
     .metadata( opts.config || { } );
 
   if ( opts.dataSource ) {
-    .use( getDataSource( opts ) );
-  }
-
-  if ( opts.dataSource && opts.dataSource.type === 'prismic' ) {
-    metalSmith.use( getPrismicContent( ));
+    metalSmith.use( getDataSource( opts ) );
+    if ( opts.dataSource.type === 'prismic' ) {
+      metalSmith.use( getPrismicContent( ));
+    }
   }
 
   metalSmith
