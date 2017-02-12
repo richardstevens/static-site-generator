@@ -7,6 +7,10 @@
     "url": "https://github.com/richardstevens/static-site-generator.git"
   },
   "author": "Richard Stevens <richard.stevens@holidayextras.com",
+  "keywords": [
+    "static site generator",
+    "ssg"
+  ],
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
