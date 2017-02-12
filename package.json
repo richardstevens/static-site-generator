@@ -7,6 +7,10 @@
     "url": "https://github.com/richardstevens/static-site-generator.git"
   },
   "author": "Richard Stevens <richard.stevens@holidayextras.com",
+  "keywords": [
+    "static site generator",
+    "ssg"
+  ],
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
@@ -14,6 +18,7 @@
     "prepublish": "npm run build",
     "trans": "node_modules/.bin/babel src/ -d lib/",
     "lint": "node_modules/.bin/eslint src/",
+    "postinstall": "npm run build",
     "ci": "npm run lint"
   },
   "engines": {
