@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/richardstevens/static-site-generator/tree/master.svg?style=shield)](https://circleci.com/gh/richardstevens/static-site-generator/tree/master)
+
 # Static Site Generator
 
 This is using metalsmith and react to create a static site given params.
