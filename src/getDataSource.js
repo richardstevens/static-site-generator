@@ -1,10 +1,14 @@
 import prismic from './metalsmith-prismic';
-import hxseo from './getHXSEOContent';
+import markDownContent from './getMarkdownContent';
 
 const getDataSource = ( opts ) => {
   if ( !opts.dataSource ) return false;
 
   if ( typeof opts.dataSource === 'function' ) return opts.dataSource;
+
+  if ( opts.dataSource.type === 'markdown' ) {
+    return markDownContent( );
+  }
 
   // Lets work out the datasource
   if ( opts.dataSource.type === 'prismic' ) {
@@ -17,12 +21,6 @@ const getDataSource = ( opts ) => {
         return '/' + doc.uid;
       }
     });
-  }
-  if ( opts.dataSource.type === 'hxseo' ) {
-    return hxseo({
-      'url': opts.dataSource.url,
-      'token': opts.dataSource.token
-    } );
   }
 
 };

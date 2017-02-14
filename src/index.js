@@ -9,6 +9,7 @@ import webpackPages from './webpackPages';
 
 const MetalSmithLoader = ( opts ) => {
   if ( !opts.src ) throw 'No src param provided for the .md file directory';
+  if ( !opts.dataSource ) throw 'No dataSource provided, did you mean type: markdown?';
   if ( !opts.templateDir ) throw 'No templateDir param provided for the template directory';
   if ( !opts.layoutDir ) throw 'No layoutDir param provided for the layouts directory';
   if ( !opts.destination ) throw 'No destination param provided for the output directory';
@@ -16,13 +17,11 @@ const MetalSmithLoader = ( opts ) => {
 
   const metalSmith = new Metalsmith( opts.src )
     .clean( opts.clean )
-    .metadata( opts.config || { } );
+    .metadata( opts.config || { } )
+    .use( getDataSource( opts ) );
 
-  if ( opts.dataSource ) {
-    metalSmith.use( getDataSource( opts ) );
-    if ( opts.dataSource.type === 'prismic' ) {
-      metalSmith.use( getPrismicContent( ));
-    }
+  if ( opts.dataSource.type === 'prismic' ) {
+    metalSmith.use( getPrismicContent( ));
   }
 
   metalSmith
