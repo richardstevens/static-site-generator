@@ -4,7 +4,6 @@ import markdown from 'metalsmith-markdown';
 import template from 'metalsmith-react-tpl';
 import getDataSource from './getDataSource';
 import assets from 'metalsmith-assets';
-import getPrismicContent from './getPrismicContent';
 import webpackPages from './webpackPages';
 
 const MetalSmithLoader = ( opts ) => {
@@ -18,13 +17,7 @@ const MetalSmithLoader = ( opts ) => {
   const metalSmith = new Metalsmith( opts.src )
     .clean( opts.clean )
     .metadata( opts.config || { } )
-    .use( getDataSource( opts ) );
-
-  if ( opts.dataSource.type === 'prismic' ) {
-    metalSmith.use( getPrismicContent( ));
-  }
-
-  metalSmith
+    .use( getDataSource( opts ) )
     .use( markdown( ))
     .use( template({
       babel: true,
