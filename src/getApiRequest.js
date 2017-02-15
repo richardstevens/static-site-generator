@@ -16,7 +16,7 @@ const getApiRequest = ( opts, file, callback ) => {
         let newFile = clone( file );
         if ( data[i].county && data[i].town && data[i].pagename ) {
           newFile.pageData = data[i];
-          newFile.pagename = 'childminders/' + newFile.pageData.pagename + '.html';
+          newFile.pagename = opts.dataSource.prefix + newFile.pageData.pagename + '.html';
         } else {
           newFile.pageData = data[i];
           newFile.pagename = data[i].pagename + '.html';

@@ -1,4 +1,3 @@
-import markDownContent from './getMarkdownContent';
 import getPrismicContent from './getPrismicData';
 import getApiRequest from './getApiRequest';
 import getPrismicRequest from './getPrismicRequest';
@@ -12,13 +11,6 @@ const dataSource = ( opts ) => {
     const iteratePage = ( prop, filename, callback ) => {
       if ( typeof opts.dataSource === 'function' ) {
         opts.dataSource( prop, filename, callback );
-      } else if ( opts.dataSource.type === 'markdown' ) {
-        markDownContent( filename, ( data, err ) => {
-          if ( err ) throw err;
-          delete files[filename];
-          files = _.extend( files, data );
-          callback( );
-        });
       } else if ( prop.prismic ) {
         const pfiles = { };
         pfiles[filename] = prop;
