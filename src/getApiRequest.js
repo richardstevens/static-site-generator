@@ -14,9 +14,11 @@ const getApiRequest = ( opts, file, callback ) => {
       data = JSON.parse( data );
       for ( let i = 0; i < data.length; i++ ) {
         let newFile = clone( file );
+        if ( !file.dataSource ) file.dataSource = { };
+        if ( !file.dataSource.prefix ) file.dataSource.prefix = '';
         if ( data[i].county && data[i].town && data[i].pagename ) {
           newFile.pageData = data[i];
-          newFile.pagename = opts.dataSource.prefix + newFile.pageData.pagename + '.html';
+          newFile.pagename = file.dataSource.prefix + newFile.pageData.pagename + '.html';
         } else {
           newFile.pageData = data[i];
           newFile.pagename = data[i].pagename + '.html';
