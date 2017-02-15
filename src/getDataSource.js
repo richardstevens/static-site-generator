@@ -1,28 +1,59 @@
-import prismic from './metalsmith-prismic';
 import markDownContent from './getMarkdownContent';
+import getPrismicContent from './getPrismicData';
+import getApiRequest from './getApiRequest';
+import getPrismicRequest from './getPrismicRequest';
+import { forEachOf } from 'async';
+import _ from 'underscore';
 
-const getDataSource = ( opts ) => {
-  if ( !opts.dataSource ) return false;
+const dataSource = ( opts ) => {
 
-  if ( typeof opts.dataSource === 'function' ) return opts.dataSource;
+  return ( files, metalsmith, done ) => {
 
-  if ( opts.dataSource.type === 'markdown' ) {
-    return markDownContent( );
-  }
-
-  // Lets work out the datasource
-  if ( opts.dataSource.type === 'prismic' ) {
-    const configLinkResolver = opts.config.linkResolver instanceof Function && opts.config.linkResolver;
-    return prismic({
-      'url': opts.dataSource.url,
-      'accessToken': opts.dataSource.accessToken,
-      'linkResolver': configLinkResolver || function( ctx, doc ) {
-        if ( doc.isBroken ) return '';
-        return '/' + doc.uid;
+    const iteratePage = ( prop, filename, callback ) => {
+      if ( typeof opts.dataSource === 'function' ) {
+        opts.dataSource( prop, filename, callback );
+      } else if ( opts.dataSource.type === 'markdown' ) {
+        markDownContent( filename, ( data, err ) => {
+          if ( err ) throw err;
+          delete files[filename];
+          files = _.extend( files, data );
+          callback( );
+        });
+      } else if ( prop.prismic ) {
+        const pfiles = { };
+        pfiles[filename] = prop;
+        getPrismicRequest({
+          'url': opts.prismic.url,
+          'linkResolver': ( ctx, doc ) => {
+            if ( doc.isBroken ) return '';
+            return '/' + doc.uid;
+          },
+          'accessToken': opts.prismic.token
+        }, pfiles, ( data, err ) => {
+          data = getPrismicContent( data );
+          if ( err ) throw err;
+          delete files[ filename ];
+          files = _.extend( files, data );
+          callback( );
+        });
+      } else if ( prop.dataSource && prop.dataSource.apiRequest ) {
+        const { api } = metalsmith._metadata;
+        api.path = prop.dataSource.apiRequest;
+        getApiRequest( api, prop, ( data, err ) => {
+          if ( err ) throw err;
+          delete files[filename];
+          files = _.extend( files, data );
+          callback( );
+        });
+      } else {
+        callback( );
       }
-    });
-  }
 
+    };
+
+    forEachOf( files, iteratePage, done );
+  };
 };
 
-export default getDataSource;
+export default dataSource;
+

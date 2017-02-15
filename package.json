@@ -1,6 +1,6 @@
 {
   "name": "static-site-generator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Static Site Generator in metalsmith / react",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
     "build": "npm run trans",
     "prepublish": "npm run build",
     "trans": "node_modules/.bin/babel src/ -d lib/",
-    "lint": "node_modules/.bin/eslint src/",
+    "lint": "node_modules/.bin/eslint src/ && echo 'All Good'",
     "postinstall": "npm run build",
     "ci": "npm run lint"
   },
