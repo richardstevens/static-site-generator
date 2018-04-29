@@ -18,11 +18,11 @@ const webpackPages = ( globalOptions ) => {
 
     const generateOutput = ( template, props, options ) => {
       const output = `var React = require( 'react' );
-                      var ReactDOM = require( 'react-dom' );
+                      var { render } = require( 'react-dom' );
                       var Element = require( '${template}' );
                       if ( typeof Element.default === 'function' ) Element = Element.default;
                       var props = ${JSON.stringify( props )};
-                      var renderedElement = ReactDOM.render( <Element {...props} />, document.getElementById( 'content' ));`;
+                      var renderedElement = render( <Element {...props} />, document.getElementById( 'content' ));`;
 
       const destFilename = options.destFilename;
       const filename = path.join( options.tempDir, destFilename );
